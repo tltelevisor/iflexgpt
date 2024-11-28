@@ -1,0 +1,16 @@
+{%- macro sidebar_all_prod (products) -%}
+    <div id="sidebarButton" onclick="openSidebar()"><img src="/static/layout-sidebar.svg"/></div>
+    <div id="sidebar" class="sidebar">
+
+        <div class="empty-box" style=""></div>
+
+        {% for ep in products %}
+        <a href="{{ url_for('prod_view', prdctid=ep.id) }}">{{ep.prdctname}}</a>
+        {% endfor %}
+
+
+    </div>
+    <div id="menu-btn" onclick="toggleMenu()"><img src="/static/menu-button.svg"/></div>
+
+
+{%- endmacro %}

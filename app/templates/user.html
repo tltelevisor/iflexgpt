@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_0.html' import sidebar_0 %}
+
+{% block app_content %}
+{{sidebar_0(current_user)}}
+<div id="mainContent" class="mainContent">
+    <div class="wrapper">
+        <div class="col span12">{{ navbar(current_user, status) }}</div>
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span5">Личный кабинет</div>
+        <div class="col span7">{{ user.username }}</div>
+
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span5">Роль</div>
+        <div class="col span7">{% if user.rolepr_id %}<p>{{ rols[user.rolepr_id].rlname }}</p>{% else %}<p>обычный
+            пользователь</p>{% endif %}
+        </div>
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span5">Последняя активность</div>
+        <div class="col span7">{% if user.last_seen %}<p>{{ user.last_seen }}</p>{% endif %}</div>
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span5">Управление услугами (API)</div>
+        <div class="col span7"></div>
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span5">Сменить пароль</div>
+        <div class="col span7"></div>
+
+        <div class="col span12"></div>
+        <div class="col span12"></div>
+    </div>
+</div>
+
+{% endblock %}

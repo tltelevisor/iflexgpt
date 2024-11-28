@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% from 'navbar.html' import navbar %}
+
+{% block app_content %}
+<span id="prdctid" name="{{ product.id }}"></span>
+<div class="wrapper">
+    <div class="col span12">{{ navbar(current_user) }}</div>
+    <div class="col span12">Обработка ответов iFlexGPT для пополнения FAQ 42</div>
+    <div class="col span12">Загруженные файлы для описания продукта</div>
+    <!--Заголовки таблицы-->
+    <div class="col span2">Файл</div>
+    <div class="col">Публичный</div>
+    <div class="col span3">Категории</div>
+    <div class="col">Токенов</div>
+    <div class="col">Батчей (частей)</div>
+    <div class="col span1">Кем загружен</div>
+    <div class="col span2">Когда загружен</div>
+    <div class="col">Удалить</div>
+    <!--Содержание таблицы, существующие файлы-->
+    {% for fl in files %}
+    <div class="col span2">{{ fl[0].filename }}</div>
+    <div class="col"><input type="checkbox" id="file-{{fl[0].id}}" {% if fl[0].ispublic %} checked {% endif %}
+                            value="1"></div>
+    <div class="col span3">
+        {% for ct in cats %}
+        <label>
+            <br><input type="checkbox" id="cat-{{ct.id}}-{{fl[0].id}}" {% if fl[1][ct.id]== "1" %} checked {% endif %}
+            value="1">
+            <span>{{ct.name}}</span></br>
+        </label>
+        {% endfor %}
+    </div>
+    <div class="col">{{ fl[3] }}</div>
+    <div class="col">{{ fl[4] }}</div>
+    <div class="col span1">{{ fl[2] }}</div>
+    <div class="col span2">{{ fl[0].filedateload.strftime("%d-%m-%y %H:%M:%S") }}</div>
+    <div class="col"><a href="javascript:void(0);" onclick="delFile('{{fl[0].id}}')"><img
+            src="{{ url_for('static', filename='file-x.svg') }}"></a></div>
+    {% endfor %}
+    <!--Заголовки таблицы Загрузить новый файл-->
+    <div class="col span12">Загрузить новый файл</div>
+    <!--Загрузить новый файл-->
+    <div class="col span2">
+        <!--    <input type="file" id="fileInput" style="visibility: hidden; position: absolute; left: -9999px;">-->
+        <!--<label for="fileInput" class="custButton">Выберите файл</label>-->
+        <form id="uploadForm" name="uploadForm">
+            <!--            <input type="file" id="fileInput" form = "uploadForm"/>-->
+            <input type="file" id="fileInput" name="file" form="uploadForm" onchange="handleFiles(this.files)"
+                   style="visibility: hidden; position: absolute; left: -9999px;">
+            <label id="btmfile" for="fileInput" class="custButton">Выберите файл</label>
+        </form>
+    </div>
+    <div class="col"><input type="checkbox" id="newpub" name="newpub" form="uploadForm" value="1"></div>
+    <div class="col span3">
+        {% for ct in cats %}
+        <label>
+            <br><input type="checkbox" id="newcat-{{ct.id}}" name="newcat-{{ct.id}}" form="uploadForm" value="1">
+            {{ct.name}}</br>
+        </label>
+        {% endfor %}
+    </div>
+    <div class="col span5"></div>
+    <div class="col">
+        <button type="submit" class="custButton" form="uploadForm"><img
+                src="{{ url_for('static', filename='file-plus.svg') }}"></button>
+    </div>
+    <!--Нижняя часть страницы-->
+    <div class="col span12">Нижнее меню</div>
+    <div class="col span12" id="response"></div>
+</div>
+<script src="{{ url_for('static', filename='Product.js') }}"></script>
+{% endblock %}

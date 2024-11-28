@@ -1,0 +1,16 @@
+{%- macro sidebar_answ (prdcts, prdctid) -%}
+    <div id="sidebarButton" onclick="openSidebar()"><img src="/static/layout-sidebar.svg"/></div>
+    <div id="sidebar" class="sidebar">
+        <a href="{{ url_for('handl_answ')}}" class="clearBtn"><img
+                src="/static/pencil-square.svg"/></a>
+        <div class="empty-box" style=""></div>
+        {% for ep in prdcts %}
+        {% if ep.id|string == prdctid %} {% set stl = "font-weight: 700;" %} {% endif %}
+        <a href="{{ url_for('handl_answ', prdctid=ep.id) }}" style = "{{stl}}">{{ep.prdctname}}</a>
+
+        {% endfor %}
+    </div>
+    <div id="menu-btn" onclick="toggleMenu()"><img src="/static/menu-button.svg"/></div>
+
+
+{%- endmacro %}

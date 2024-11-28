@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from 'quick_form.html' import quick_form  %}
+{% from 'navbar.html' import navbar %}
+
+
+
+
+{% block app_content %}
+{{ navbar(current_user, status) }}
+    <h1>Вход</h1>
+    <div class="row">
+        <div class="col-md-4" style="display: block;">
+            {{ quick_form(form) }}
+        </div>
+    </div>
+    <p>Новый пользователь? <a href="{{ url_for('register') }}">Зарегистрируйтесь!</a></p>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_product.html' import sidebar_product %}
+
+{% block app_content %}
+{{sidebar_product (product)}}
+<span id="prdctid" name="{{ product.id }}"></span>
+<!--<div class="wrapper" style="margin-left: 236px;">-->
+<div id="mainContent" class="mainContent">
+    <div class="wrapper">
+        <!--    <div id="mainContent" class="mainContent">-->
+        <div class="col span12">{{ navbar(current_user, status) }}</div>
+        <div class="col span6"><h4>Редактирование описания {{product.prdctname }}</h4></div>
+        <div class="col span6" style="display: flex; align-items: center;"><a
+                href="{{ url_for('handl_answ', prdctid=product.id) }}" class="custom-nav-item"> Обработка ответов
+            iFlexGPT
+            для пополнения FAQ ({{nh_answ}})</a></div>
+
+        <!--Информация о продукте по категориям-->
+        <!--    Заголовки-->
+        <div class="col span2"><h4>Категория</h4></div>
+        <div class="col span3"><h4>Краткое описание</h4></div>
+        <div class="col span7"><h4>Подробное описание</h4></div>
+        {% for ct in cats %}
+        <div class="col span2" id="cat-{{ct[0]}}">{{ct[1]}}</div>
+        <div class="col span2" id="qst-{{ct[5]}}" style="display: none">{{ct[6]}}</div>
+        <div class="col span3">
+            <a id="ans-{{ct[5]}}" for="{{ct[0]}}" href="javascript:void(0);" class="answer-ha"
+               onclick="editFaq({{ct[5] }})">{{ct[7]}}</a>
+        </div>
+        <div class="col span2" id="qst-{{ct[2]}}" style="display: none">{{ct[3]}}</div>
+        <div class="col span7">
+            <a id="ans-{{ct[2]}}" for="{{ct[0]}}" href="javascript:void(0);" class="answer-ha"
+               onclick="editFaq({{ ct[2] }})">{{ct[4]}}</a>
+        </div>
+        {% endfor %}
+        <!--    <div class="col span12"><h4>Редактировать описание</h4><div>-->
+
+        <div class="col span2" id="cat_faq"></div>
+        <div class="col span8">
+        <textarea id="question" class="textcl"
+                  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
+                  placeholder="Вопрос по теме выбранной категории о продукте..."></textarea>
+        </div>
+        <div class="col span2">
+            <div id="loader" class="answ-hidden" style="color: #ecaa67;">Ждём ответ...</div>
+        </div>
+
+        <div class="col span2"></div>
+        <div class="col span7">
+        <textarea id="answer" class="textcl"
+                  oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"
+                  placeholder="Ответ по теме выбранной категории о продукте..."></textarea>
+        </div>
+        <div class="col">
+            <!--        <button class="input-container button" onclick="saveFaq()">-->
+            <a href="javascript:void(0);" class="custom-nav-item" onclick="saveFaq()" style="padding: 10px 0px;">
+                Записать</a>
+            <!--            <img src="{#{ url_for( 'static', filename='arrow-up-circle_38.svg')}#}"/>-->
+
+            <!--        </button>-->
+        </div>
+        <div class="col span2">
+            <a id="askgpt" href="javascript:void(0);" class="custom-nav-item" onclick="askGpt()"
+               style="padding: 10px 0px;">
+                Запросить iFlexGPT
+            </a>
+            {% for ef in files %}
+            <label class="checkbox-btn">
+                <input type="checkbox" id="chkfile-{{ ef[0].id }}">
+                <span>{{ ef[0].filename }}</span>
+            </label>
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+<script src="{{ url_for('static', filename='product.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% from 'sidebar.html' import sidebar %}
+{% from 'chat.html' import chat %}
+{% from 'navbar.html' import navbar %}
+
+{% block app_content %}
+
+    {{ sidebar(id_topics) }}
+    <div id="mainContent" class="mainContent">
+
+            <div class="col span12" >{{ navbar(current_user, status) }}</div>
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div style="display: flex; margin-bottom: 10px;" id="prdcts-file-container">
+                    <style>Выбор продуктов</style>
+                    <style>Блок выбора продуктов</style>
+                    {% if products %}{% for ep in products %}
+                    <label class="checkbox-prd" style='width: 150px; box-sizing: border-box;'>
+                        <input type="checkbox" id="chkprd-{{ ep.id }}" onchange='chk_prd("{{ ep.id }}")'>
+                        <span>{{ ep.prdctname }}</span>
+                    </label>
+                    {% endfor %}{% endif%}
+                </div>
+                <div style='display: flex;'>
+
+                    <div id="context" style='display: flex;'>
+                        {% if cats %}{% for ec in cats %}
+                        <label class="checkbox-btn"  style="margin-right: 5px;">
+                            <input type="checkbox" id="chkcat-{{ ec.id }}">
+                            <span>{{ ec.name }}</span>
+                        </label>
+                        {% endfor %}{% endif%}
+                        {% if products %}{% for ep in products %}
+                        <div class="file-container" id="clfile-{{ ep.id }}">
+
+                            {% if files %} {% for ef in files %} {% if ef.prdct_id == ep.id %}
+                            <label class="checkbox-btn" style="margin-right: 5px;">
+                                <input type="checkbox" id="chkfile-{{ ef.id }}">
+                                <span>{{ ef.filename }}</span>
+                            </label>
+                            {% endif%} {% endfor %} {% endif%}
+                        </div>
+                        {% endfor %}{% endif%}
+                    </div>
+                    <div class="file-0-container" id="0-clfile">
+                        <style>Пустой контейнер для замещения контейнов для файлов</style>
+                    </div>
+                </div>
+                <div style="min-height: 60px;display: flex; flex-direction: row; align-items: center;">
+                    <style>Контейнер для краткого описания продукта</style>
+                    <div id="0-prdblock">
+                        <style>Пустой контейнер для замещения контейнера краткого описания продукта</style>
+                        Выберите продукт, категории или файлы
+                    </div>
+                    {% if products %}{% for ep in products %}
+                    <div id="prdblock-{{ ep.id }}" style="display: none; margin-top: 6px; width: 800px;">
+                        {{ ep.prdctname }}
+                    </div>
+                    {% endfor %} {% endif%}
+                </div>
+
+
+
+                <div class="chat-container">
+                    <style>Контейнер чата</style>
+                    {{ chat(posts) }}
+                </div>
+            </div>
+
+    </div>
+
+
+{% endblock %}
+

@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_all_prod.html' import sidebar_all_prod %}
+
+{% block app_content %}
+
+{{sidebar_all_prod (products)}}
+<div id="mainContent" class="mainContent">
+    <!--    <div class="wrapper" style="margin-left: 236px;">-->
+    <div class="wrapper">
+        <div class="col span12">{{ navbar(current_user, status) }}</div>
+
+        <!--        <div class="col span2"></div>-->
+        <div class="col span12"><h4>Перечень продуктов</h4></div>
+
+        <!--        <div class="col span2"></div>-->
+        <div class="col span4"><h4>Продукт</h4></div>
+        <div class="col span2"><h4>Менеджер</h4></div>
+        <div class="col span4"><h4>Описание продукта</h4></div>
+        <div class="col span2"><h4>Удалить</h4></div>
+<!--        <div class="col span1"></div>-->
+        {% for pr in products %}
+        <!--        <div class="col span2"></div>-->
+        <div class="col span4">{{ pr.prdctname }}</div>
+        <div class="col span2">{{ pr.manager.username }}</div>
+        <div class="col span2"><a class="custom-nav-item" href="{{ url_for('product', prdctid=pr.id) }}">Изменить</a>
+        </div>
+        <div class="col span2"><a class="custom-nav-item"
+                                  href="{{ url_for('prod_view', prdctid=pr.id) }}">Посмотреть</a></div>
+        <div class="col span2"><a class="custom-nav-item"
+                                  href="{{ url_for('prod_view', prdctid=pr.id) }}">Удалить</a></div>
+        <!--        <div class="col span1"></div>-->
+        {% endfor %}
+
+        <!--        <div class="col span2"></div>-->
+        <div class="col span12"><h4>Добавить продукт</h4></div>
+
+
+        <!--        <div class="col span2"></div>-->
+        <div class="col span6">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div>{{ form.prdctname(size=32) }}</div>
+                <div>{{ form.manager.label }} {{ form.manager }}</div>
+                <div>{{ form.submit }}</div>
+            </form>
+        </div>
+        <div class="col span6"></div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block navbar_bottom %}{{ navbar(current_user) }}{% endblock %}

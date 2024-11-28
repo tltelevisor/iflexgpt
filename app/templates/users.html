@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_0.html' import sidebar_0 %}
+
+{% block app_content %}
+{{sidebar_0(current_user)}}
+<div id="mainContent" class="mainContent">
+    <div class="wrapper">
+        <div class="col span12">{{ navbar(current_user, status) }}</div>
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span12">Пользователи</div>
+
+<!--        <div class="col span2"></div>-->
+        <div class="col span3">Пользователь</div>
+        <div class="col span3">Роль</div>
+        <div class="col span6">Выбрать роль</div>
+<!--        <div class="col span2"></div>-->
+
+        {% for u in users %}
+<!--        <div class="col span2"></div>-->
+        <div class="col span3">{{ u.username }}</div>
+        <div class="col span3">{{ rols[u.rolepr_id].rlname }}</div>
+
+        <div class="col span6">
+            <form method="POST" action="{{ url_for('chngrl',userid=u.id) }}">
+                <select name="{{u.username}}" id="{{u.username}}">
+                    {% for er in rols %}
+                    <option value="{{er.id}}"> {{ er.rlname }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Изменить">
+            </form>
+        </div>
+
+<!--        <div class="col span2"></div>-->
+        {% endfor %}
+
+        <div class="col span12"></div>
+        <div class="col span12"></div>
+    </div>
+</div>
+
+{% endblock %}

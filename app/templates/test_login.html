@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% from 'navbar.html' import navbar %}
+{% block navbar_top %}{{ navbar(current_user) }}{% endblock %}
+
+{% block app_content %}
+    <h1>Вход</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+        <p>
+            {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                  {% for message in messages %}
+                     {{ message }}
+                  {% endfor %}
+               {% endif %}
+            {% endwith %}
+        </p>
+        <p>Новый пользователь? <a href="{{ url_for('register') }}">Зарегистрируйтесь!</a></p>
+    </form>
+{% endblock %}
+
+{% block navbar_bottom %}{{ comp.navbar(current_user) }}{% endblock %}

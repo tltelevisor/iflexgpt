@@ -1,0 +1,41 @@
+{%- macro navbar (current_user, status) -%}
+<nav class="custom-navbar">
+    <a class="custom-navbar-brand" href="{{ url_for('index') }}"><img
+            src="{{ url_for('static',filename='iFlex_log_20.svg') }}"
+            style="margin-right: 10px;">iFlexGPT</a>
+    <div>{%if status[0] != 0 %}<img src="{{ url_for('static',filename='cross.png') }}" style="margin-left: 5px;">{% endif %}</div>
+ <div>{%if status[0] == 0 %}{{status[1]}}{% endif %}</div>
+
+    <div class="container_center_menu">
+        <button class="custom-navbar-toggler" id="navbar-toggler" type="button" onclick="openMenu()"
+                aria-controls="custom-navbar-menu" aria-expanded="false"
+                aria-label="Toggle navigation">
+
+            <img src="{{ url_for('static', filename='list.svg') }}">
+        </button>
+        <div class="custom-navbar-menu" id="custom-navbar-menu">
+            {% if current_user.is_anonymous %}
+            <a class="custom-nav-item" aria-current="page" href="{{ url_for('login') }}">Вход в iFlexGPT</a>
+            {% else %}
+            <a class="custom-nav-item" href="{{ url_for('handl_answ') }}">iFlexGPT -> FAQ</a>
+            <a class="custom-nav-item" href="{{ url_for('products') }}">Продукты</a>
+            <a class="custom-nav-item" href="{{ url_for('users') }}">Пользователи</a>
+            <a class="custom-nav-item" href="{{ url_for('user', username=current_user.username) }}">Л/к
+                {{current_user.username}}</a>
+            <a class="custom-nav-item" href="{{ url_for('logout') }}">Выход</a>
+            {% endif %}
+<!--            <a href="{#{ url_for('test') }#}">test</a>-->
+        </div>
+    </div>
+</nav>
+<!--<p>flash(f'Здесь будут появляться flash-сообщения')</p>-->
+<div class="container" id="base_flashed_messages">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert_alert-info" role="alert">{{ message }}</div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+{%- endmacro %}

@@ -1,0 +1,16 @@
+{%- macro sidebar (id_topics) -%}
+    <div id="sidebarButton" onclick="openSidebar()"><img src="/static/layout-sidebar.svg"/></div>
+    <div id="sidebar"  class="sidebar">
+        <a href="javascript:void(0)" class="clearBtn" onclick="clearChat()"><img
+                src="/static/pencil-square.svg"/></a>
+        <div class="empty-box" style=""></div>
+        <div id="topics" class="empty-box" style="">
+        {% for et in id_topics %}
+        <a href="javascript:void(0);" onclick="getPosts('{{ et[0] }}')">{{et[1]}}</a>
+        {% endfor %}
+        </div>
+    </div>
+    <div id="menu-btn" onclick="toggleMenu()"><img src="/static/menu-button.svg"/></div>
+
+
+{%- endmacro %}

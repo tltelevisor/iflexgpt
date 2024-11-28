@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% from 'quick_form.html' import quick_form  %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_answ.html' import sidebar_answ %}
+
+
+{% block app_content %}
+{{ sidebar_answ(prdcts, prdctid)}}
+<!--<div id="prdctid" name="{{prdctid}}" style="margin-left: 236px;">-->
+<div id="prdctid" name="{{prdctid}}" class="mainContent">
+    <div class="col span12">{{ navbar(current_user, status) }}</div>
+    <h3>Вопросы и ответы iFlexGPT для пополнения FAQ</h3>
+    <div style="display: flex; flex-direction: column;height: 300px;overflow-y: scroll;max-width: 1000px;">
+        <div>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th class="table-info"><input type="checkbox" id="all-chk"></th>
+                    <th class="table-info">Вопрос</th>
+                    <th class="table-faq">FAQ</th>
+                    <th class="table-success">Ответ <img class="icon"
+                                                         src="{{ url_for('static',filename='hand-thumbs-up.svg') }}"
+                                                         alt="dots icon"></th>
+                    <th class="table-danger">Ответ <img class="icon"
+                                                        src="{{ url_for('static',filename='hand-thumbs-down.svg') }}"
+                                                        alt="dots icon"></th>
+                    <th class="table-warning">Нет оценки</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for post in posts %}
+                {% set class_name, class_name_1 = "table-warning", "answer-ha" %}
+                {% if post[2].is_satisfied == 1%} {% set class_name, class_name_1 = "table-success", "answer-ha" %} {%
+                endif %}
+                {% if post[2].is_satisfied == 0 %} {% set class_name, class_name_1 = "table-danger", "answer-ha" %} {%
+                endif %}
+                <tr>
+                    <td class="table-info"><input type="checkbox" name="{{ post[0] }}-chk" id="{{ post[0] }}-chk"
+                                                  form="sndch"></td>
+                    <td colspan="5">
+                        <table class="table">
+                            <tr>
+                                <td class="table-info" id="{{ post[0] }}-quest">{{ post[1] }}</td>
+                            </tr>
+                            <tr>
+                                <td class="table-faq">{{ post[3] }}</td>
+                            </tr>
+                            <tr>
+                                <td class="{{class_name}}">
+
+                                    <a href="javascript:void(0);" class="{{class_name_1}}" id="{{ post[0] }}-answ"
+                                       onclick="settext('{{ post[0] }}')">{{ post[2] }}</a>
+
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <form id="sndch" name="sndch" action="" method="post">
+        <input class="button-ha" id="sndch_submit" type="submit"
+               value='Отметить выбранные ответы как обработанные без дополнения FAQ'>
+    </form>
+
+    <p></p>
+    <h3>Пополнить FAQ</h3>
+
+
+    <div>
+        {{ quick_form(form,id=id,name=name) }}
+        <div id="loader" class="answ-hidden" style="color: #ecaa67;">Ждём ответ...</div>
+    </div>
+</div>
+</div>
+<script>
+
+    const checkbox = document.getElementById('all-chk')
+    const sndchForm = document.getElementById('sndch')
+    const faq_addForm = document.getElementById('faq_add')
+    const prdSelect = document.getElementById('product')
+    const prdId = document.getElementById('prdctid').getAttribute('name')
+    prdSelect.selectedIndex = prdId - 1
+
+    sndchForm.addEventListener('submit', handleFormSubmit)
+    faq_addForm.addEventListener('submit', handleFormSubmit_2)
+
+    async function handleFormSubmit(event) {
+      // Просим форму не отправлять данные самостоятельно
+      event.preventDefault()
+      data2 = serializeForm(event.srcElement)
+      toggleLoader()
+      const response = await sendData(data2)
+      toggleLoader()
+      location.reload()
+    }
+
+    async function handleFormSubmit_2(event) {
+      event.preventDefault()
+
+    const formData1 = new FormData(sndchForm);
+    const formData2 = new FormData(faq_addForm);
+    const formDataS = new FormData();
+    for (var pair of formData1.entries()) {
+        formDataS.append(pair[0], pair[1]);
+    }
+    for (var pair of formData2.entries()) {
+        formDataS.append(pair[0], pair[1]);
+    }
+    <!--  console.log('sum', formDataS)-->
+    toggleLoader()
+      const response = await sendData(formDataS)
+    toggleLoader()
+    location.reload()
+    }
+
+    checkbox.addEventListener('change', (event) => {
+    const chk = event.currentTarget.checked
+          const { elements } = sndchForm
+          Array.from(elements)
+            .filter((item) => item.type === 'checkbox') // Оставляем только чекбоксы
+            .forEach((checkbox) => {
+              checkbox.checked = chk; // Устанавливаем значение чекбокса в true
+            });
+            document.getElementById('sndch_submit').focus()
+    <!--      serializeForm(sndchForm);-->
+    })
+
+    function serializeForm(formNode) {
+      return new FormData(formNode)
+    }
+
+    async function sendData(data) {
+      return await fetch('', {
+        method: 'POST',
+        body: data,
+      })
+    }
+
+    function settext(id) {
+      e_q = document.getElementById('question')
+      e_a = document.getElementById('answer')
+      const chckbx = document.getElementById(id + '-chk')
+      chckbx.checked = true;
+      e_q.textContent = document.getElementById(id + '-quest').innerText;
+      e_a.textContent = document.getElementById(id + '-answ').innerText;
+    <!--  st = document.getElementById(id + '-chk').checked-->
+    <!--  alert(st);-->
+      document.getElementById(id + '-chk').checked = true;
+    <!--  document.getElementById('personlist').value='2';-->
+      e_q.style.height = `${e_q.scrollHeight}px`;
+      e_a.style.height = `${e_a.scrollHeight}px`;
+    <!--  document.getElementById('question').style.height = ${document.getElementById('question').scrollHeight}px;-->
+    <!--  document.getElementById('answer').style.height = ${document.getElementById('answer').scrollHeight}px;-->
+      document.getElementById('answer').focus()
+      }
+
+    function toggleLoader() {
+      const loader = document.getElementById('loader')
+      loader.classList.toggle('hidden')
+    }
+
+
+</script>
+
+{% endblock %}

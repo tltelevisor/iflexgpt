@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_product.html' import sidebar_product %}
+
+
+{% block app_content %}
+{{sidebar_product (product)}}
+<div id="mainContent" class="mainContent">
+    <div class="wrapper">
+        <div class="col span12">{{ navbar(current_user, status) }}</div>
+
+        <!--    <div class="col span2"></div>-->
+        <div class="col span12"><h4>Описание {{product.prdctname}}</h4></div>
+
+        {% for ct in cats %}
+        <!--    <div class="col span2"></div>-->
+        <div class="col span12" id="cat-{{ct[0]}}"><h4>{{ct[1]}}</h4></div>
+
+        <!--    <div class="col span2"></div>-->
+        <div class="col span12">{{ct[4]}}</div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block navbar_bottom %}{{ navbar(current_user) }}{% endblock %}

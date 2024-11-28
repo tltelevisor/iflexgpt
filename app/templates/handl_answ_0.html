@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from 'navbar.html' import navbar %}
+
+{% block app_content %}
+
+<div class="wrapper">
+    <div class="col span12">{{ navbar(current_user) }}</div>
+
+    <div class="col span12"></div>
+    <div class="col span12"><h3>Нет необработанных вопросов и ответов iFlexGPT для пополнения FAQ</h3></div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,11 @@
+{%- macro prdct_m(prdct, faq_posts) -%}
+<b>{{ prdct }}</b>
+<div>
+    {% if faq_posts %}
+    FAQ:
+    {% for post in faq_posts %}
+        <b>({{ post[1] }}):</b> {{ post[0] }}
+    {% endfor %}
+    {% endif %}
+</div>
+{%- endmacro %}

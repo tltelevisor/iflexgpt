@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/svg+xml" href="../static/iFlex_log_20.svg" />
+    {% if title %}
+    <title>{{ title }} - iFlex</title>
+    {% else %}
+    <title>iFlex</title>
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='iFlexgpt.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for( 'static', filename='Product.css')}}">
+
+</head>
+
+<body>
+
+{% block app_content %}{% endblock %}
+
+<div class="wrapper">
+<div class="col span12" style="text-align: center">&copy; 2024 iFlex</div>
+</div>
+
+<script src="{{ url_for('static', filename='base.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{%- macro sidebar_product (product) -%}
+    <div id="sidebarButton" onclick="openSidebar()"><img src="/static/layout-sidebar.svg"/></div>
+    <div id="sidebar" class="sidebar">
+
+        <div class="empty-box" style=""></div>
+
+        {#% if ep.id|string == prdctid %#} {#% set stl = "font-weight: 700;" %#} {#% endif %#}
+<!--        <a href="{#{ url_for('product_files', prdctid=ep.id) }#}" style = "{#{stl}#}">Файлы описания</a>-->
+        <p style="margin-left: 20px; font-weight: bold;">{{product.prdctname}}</p>
+        <a href="{{ url_for('prod_view', prdctid=product.id) }}">Смотреть описание</a>
+        <a href="{{ url_for('product', prdctid=product.id) }}">Редактировать</a>
+        <a href="{{ url_for('product_files', prdctid=product.id) }}">Файлы описания</a>
+    </div>
+    <div id="menu-btn" onclick="toggleMenu()"><img src="/static/menu-button.svg"/></div>
+
+
+{%- endmacro %}

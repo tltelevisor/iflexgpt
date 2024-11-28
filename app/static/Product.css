@@ -1,0 +1,47 @@
+   .wrapper {
+/*width: 100%;*/
+      width: 100%;
+      /*max-width: 960px;*/
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+    }
+
+    .col {
+      background: #f9f9f9; /*#f9f9f9 #d3d3d3*/
+    }
+
+    .span2 { grid-column: auto / span 2;}
+    .span3 { grid-column: auto / span 3;}
+    .span4 { grid-column: auto / span 4;}
+    .span5 { grid-column: auto / span 5;}
+    .span6 { grid-column: auto / span 6;}
+    .span7 { grid-column: auto / span 7;}
+    .span8 { grid-column: auto / span 8;}
+    .span9 { grid-column: auto / span 9;}
+    .span10 { grid-column: auto / span 10;}
+    .span11 { grid-column: auto / span 11;}
+    .span12 { grid-column: auto / span 12;}
+    .ovfh {overflow: auto}
+    .contentrow { grid-column: 1 / 13;}
+.custButton {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 7px;
+    border: none;
+}
+.custButton:hover {
+    background-color: #dddddd;
+}
+
+.textcl {
+    width: 96%;
+    resize: none;
+    overflow: hidden;
+    min-height: 25px;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+}

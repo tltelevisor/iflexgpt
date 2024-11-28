@@ -1,0 +1,34 @@
+#!/bin/bash
+#/etc/systemd/system/iflexgpt.service
+[Unit]
+Description=iflexgpt.service[iFlex PrivateGPT service]
+
+[Service]
+Type=simple
+User=max
+WorkingDirectory=/home/max/iflexgpt/
+ExecStart=/home/max/iflexgpt/1i.sh
+UMask=000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
+
+
+max@13894:~$ cat /etc/systemd/system/privategpt.service
+[Unit]
+Description=privategpt.service[PrivateGPT]
+
+[Service]
+TimeoutStopSec=2
+Type=simple
+User=max
+WorkingDirectory=/home/max/private-gpt
+Environment="PGPT_PROFILES=ollama"
+ExecStart=/home/max/.local/bin/poetry run python -m private_gpt
+UMask=000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

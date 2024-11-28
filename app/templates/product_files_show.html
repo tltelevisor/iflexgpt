@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% from 'navbar.html' import navbar %}
+{% from 'sidebar_product.html' import sidebar_product %}
+
+
+{% block app_content %}
+{{sidebar_product (product)}}
+
+<!--Заголовки таблицы-->
+<span id="prdctid" name="{{ product.id }}"></span>
+<div id="mainContent" class="mainContent">
+    <div class="wrapper">
+        <div class="col span12">{{ navbar(current_user, status) }}</div>
+        <div class="col span12">Файлы описания {{product.prdctname}}</div>
+        <div class="col span2"><h4>Файл</h4></div>
+        <div class="col"><h4>Публичный</h4></div>
+        <div class="col span3"><h4>Категории</h4></div>
+        <div class="col"><h4>Токенов</h4></div>
+        <div class="col"><h4>Батчей (частей)</h4></div>
+        <div class="col span1"><h4>Кем загружен</h4></div>
+        <div class="col span2"><h4>Когда загружен</h4></div>
+        <div class="col"><h4>Удалить</h4></div>
+        <!--Содержание таблицы, существующие файлы-->
+        {% for fl in files %}
+        <div class="col span2">{{ fl[0].filename }}</div>
+        <div class="col"><input type="checkbox" id="file-{{fl[0].id}}" {% if fl[0].ispublic %} checked {% endif %}
+                                value="1"></div>
+        <div class="col span3">
+            {% for ct in cats %}
+            <label class="checkbox-btn">
+                <input type="checkbox" id="cat-{{ct[0]}}-{{fl[0].id}}" {% if fl[1][ct[0]]== "1" %} checked {% endif %}
+                value="1">
+                <span>{{ct[1]}}</span>
+            </label>
+            {% endfor %}
+        </div>
+        <div class="col">{{ fl[3] }}</div>
+        <div class="col">{{ fl[4] }}</div>
+        <div class="col span1">{{ fl[2] }}</div>
+        <div class="col span2">{{ fl[0].filedateload.strftime("%d-%m-%y %H:%M:%S") }}</div>
+        <div class="col">
+<!--            <a href="javascript:void(0);" onclick="delFile('{{fl[0].id}}')"><img-->
+<!--                src="{{ url_for('static', filename='file-x.svg') }}"></a>-->
+                    <button type="submit" class="custButton" onclick="delFile('{{fl[0].id}}')"><img
+                    src="{{ url_for('static', filename='file-x.svg') }}"></button>
+        </div>
+
+        {% endfor %}
+        <div class="col span6"><h4>Загрузить новый файл</h4></div>
+        <div class="col span6"><h4>Загрузить</h4></div>
+        <div class="col span2" style="display: flex; align-items: center;">
+
+            <form id="uploadForm" name="uploadForm">
+                <label id="btmfile" for="fileInput" class="custButton">Выбрать</label>
+                <input type="file" id="fileInput" name="file" form="uploadForm" onchange="handleFiles(this.files)"
+                       style="visibility: hidden; ">
+            </form>
+        </div>
+        <div class="col"><input type="checkbox" id="newpub" name="newpub" form="uploadForm" value="1"></div>
+        <div class="col span3">
+            {% for ct in cats %}
+            <label class="checkbox-btn">
+                <input type="checkbox" id="newcat-{{ct[0]}}" name="newcat-{{ct[0]}}" form="uploadForm" value="1">
+                <span>{{ct[1]}}</span>
+            </label>
+            {% endfor %}
+        </div>
+        <div class="col span6">
+            <button type="submit" class="custButton" form="uploadForm"><img
+                    src="{{ url_for('static', filename='file-plus.svg') }}"></button>
+        </div>
+        <div class="col span12" id="response"></div>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='product.js') }}"></script>
+
+{% endblock %}
